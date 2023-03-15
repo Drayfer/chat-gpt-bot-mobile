@@ -1,18 +1,37 @@
 {
   "cli": {
-    "version": ">= 2.7.1"
+    "version": ">= 3.6.1"
   },
   "build": {
     "development": {
       "developmentClient": true,
-      "distribution": "internal"
+      "distribution": "internal",
+      "ios": {
+        "resourceClass": "m1-medium"
+      }
     },
     "preview": {
-      "distribution": "internal"
+      "distribution": "internal",
+      "ios": {
+        "resourceClass": "m1-medium"
+      }
     },
-    "production": {}
+    "production": {
+      "ios": {
+        "resourceClass": "m1-medium"
+      }
+    },
+    "preview2": {
+      "android": {
+        "buildType": "apk"
+      }
+    }
   },
   "submit": {
-    "production": {}
+    "production": {
+      "android": {
+        "serviceAccountKeyPath": "pc-api-8409346639364065148-852-aeab91089409.json"
+      }
+    }
   }
 }

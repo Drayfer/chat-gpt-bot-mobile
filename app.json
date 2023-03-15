@@ -1,15 +1,15 @@
 {
   "expo": {
-    "name": "T-app",
-    "slug": "T-app",
-    "version": "1.0.2",
+    "name": "Chat GPT ",
+    "slug": "chatGpt",
+    "version": "1.0.4",
     "orientation": "portrait",
-    "icon": "./assets/ticon.png",
-    "userInterfaceStyle": "light",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "dark",
     "splash": {
-      "image": "./assets/tsplash.png",
+      "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#363741"
+      "backgroundColor": "#211f20"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -19,20 +19,19 @@
       "supportsTablet": true
     },
     "android": {
-      "googleServicesFile": "./google-services.json",
+      "package": "com.chatgpt.ai.chatbot",
+      "versionCode": 5,
       "adaptiveIcon": {
-        "foregroundImage": "./assets/tadaptive-icon2.png",
-        "backgroundColor": "#FFFFFF"
-      },
-      "package": "com.tapphelper",
-      "versionCode": 3
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#211f20"
+      }
     },
     "web": {
-      "favicon": "./assets/tfavicon.png"
+      "favicon": "./assets/favicon.png"
     },
     "extra": {
       "eas": {
-        "projectId": "3256af88-975d-47db-a99c-5cb9b02f3e00"
+        "projectId": "aaed2230-1e3b-4c5c-aa52-c1084f4e31ca"
       }
     }
   }

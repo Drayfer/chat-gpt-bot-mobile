@@ -6,7 +6,7 @@ import store from "./store/store";
 export default function App() {
   return (
     <>
-      <StatusBar backgroundColor={"#F1F5F9"} barStyle={"dark-content"} />
+      <StatusBar backgroundColor={"#211f20"} barStyle={"light-content"} />
       <ReduxProvider store={store}>
         <WebApp />
       </ReduxProvider>

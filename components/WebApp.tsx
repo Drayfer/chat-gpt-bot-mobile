@@ -4,12 +4,7 @@ import * as Notification from "expo-notifications";
 import { useSelector } from "react-redux";
 import { RootState } from "../store/store";
 import { useDispatch } from "react-redux";
-import {
-  resetUserInfo,
-  setUserInfo,
-  setWebviewToken,
-} from "../store/slices/userInfoSlice";
-import axios from "axios";
+import { setWebviewToken } from "../store/slices/userInfoSlice";
 import * as Notifications from "expo-notifications";
 import Constants from "expo-constants";
 import { ActivityIndicator, Platform, View } from "react-native";
@@ -26,7 +21,6 @@ export default function WebApp() {
   const dispatch = useDispatch();
   const userInfo = useSelector((state: RootState) => state.userInfo);
   const [isLoading, setIsLoading] = useState(true);
-  const [message, setMessage] = useState("");
 
   useEffect(() => {
     const getPermission = async () => {
@@ -61,34 +55,6 @@ export default function WebApp() {
     getPermission();
   }, [userInfo]);
 
-  useEffect(() => {
-    if (message) {
-      if (message === "exit") {
-        dispatch(resetUserInfo());
-        axios.post(
-          `${process.env.REACT_APP_API}/option/webview/token/${userInfo.userId}`,
-          { webviewToken: "" }
-        );
-        setMessage("");
-        return;
-      }
-      const messageObj = JSON.parse(message);
-      dispatch(setUserInfo(messageObj));
-      setMessage("");
-    }
-  }, [message]);
-
-  useEffect(() => {
-    if (userInfo.userId && userInfo.token && userInfo.webviewToken) {
-      axios.post(
-        `${process.env.REACT_APP_API}/option/webview/token/${userInfo.userId}`,
-        {
-          webviewToken: userInfo.webviewToken,
-        }
-      );
-    }
-  }, [userInfo]);
-
   const ActivityIndicatorElement = () => {
     return (
       <View
@@ -108,7 +74,7 @@ export default function WebApp() {
     <>
       {Platform.OS === "web" ? (
         <iframe
-          src={process.env.REACT_APP_URL}
+          src={"https://chat-gpt-bot-navy.vercel.app/"}
           height={"100%"}
           width={"100%"}
         />
@@ -124,9 +90,13 @@ export default function WebApp() {
           >
             <WebView
               source={{
-                uri: process.env.REACT_APP_URL || "",
+                uri: "https://chat-gpt-bot-navy.vercel.app/" || "",
               }}
-              onMessage={(e) => setMessage(e.nativeEvent.data)}
+              userAgent={
+                Platform.OS === "android"
+                  ? "Chrome/18.0.1025.133 Mobile Safari/535.19"
+                  : "AppleWebKit/602.1.50 (KHTML, like Gecko) CriOS/56.0.2924.75"
+              }
               onLoad={() => setIsLoading(false)}
             />
           </View>
