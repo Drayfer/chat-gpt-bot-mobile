@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "Chat GPT ",
-    "slug": "chatGpt",
-    "version": "1.0.4",
+    "name": "GPT AI Chat Bot",
+    "slug": "gptAiChatBot",
+    "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
@@ -19,8 +19,8 @@
       "supportsTablet": true
     },
     "android": {
-      "package": "com.chatgpt.ai.chatbot",
-      "versionCode": 5,
+      "package": "com.gptaichat.bot",
+      "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#211f20"
@@ -31,8 +31,11 @@
     },
     "extra": {
       "eas": {
-        "projectId": "aaed2230-1e3b-4c5c-aa52-c1084f4e31ca"
+        "projectId": "2a69672d-3b94-4cd4-a370-1fac2bf87a7f"
       }
     }
   }
+  // "react-native-google-mobile-ads": {
+  //   "android_app_id": "ca-app-pub-1192136275433069~1116997709"
+  // }
 }

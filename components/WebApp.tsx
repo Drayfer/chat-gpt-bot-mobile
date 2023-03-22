@@ -7,7 +7,7 @@ import { useDispatch } from "react-redux";
 import { setWebviewToken } from "../store/slices/userInfoSlice";
 import * as Notifications from "expo-notifications";
 import Constants from "expo-constants";
-import { ActivityIndicator, Platform, View } from "react-native";
+import { ActivityIndicator, Platform, View, StatusBar } from "react-native";
 
 Notification.setNotificationHandler({
   handleNotification: async () => ({
@@ -74,7 +74,7 @@ export default function WebApp() {
     <>
       {Platform.OS === "web" ? (
         <iframe
-          src={"https://chat-gpt-bot-navy.vercel.app/"}
+          src={"https://chat-gpt-nzna.onrender.com"}
           height={"100%"}
           width={"100%"}
         />
@@ -90,7 +90,7 @@ export default function WebApp() {
           >
             <WebView
               source={{
-                uri: "https://chat-gpt-bot-navy.vercel.app/" || "",
+                uri: "https://chat-gpt-nzna.onrender.com" || "",
               }}
               userAgent={
                 Platform.OS === "android"
@@ -99,6 +99,7 @@ export default function WebApp() {
               }
               onLoad={() => setIsLoading(false)}
             />
+            <StatusBar backgroundColor="#282829" barStyle="light-content" />
           </View>
         </>
       )}
