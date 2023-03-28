@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import WebView from "react-native-webview";
 import * as Notification from "expo-notifications";
 import { useSelector } from "react-redux";
@@ -8,6 +8,17 @@ import { setWebviewToken } from "../store/slices/userInfoSlice";
 import * as Notifications from "expo-notifications";
 import Constants from "expo-constants";
 import { ActivityIndicator, Platform, View, StatusBar } from "react-native";
+import {
+  BannerAd,
+  BannerAdSize,
+  TestIds,
+} from "react-native-google-mobile-ads";
+
+const adUnitId = __DEV__
+  ? TestIds.BANNER
+  : "ca-app-pub-1192136275433069/7264996283";
+
+const VERSION = "1";
 
 Notification.setNotificationHandler({
   handleNotification: async () => ({
@@ -21,6 +32,7 @@ export default function WebApp() {
   const dispatch = useDispatch();
   const userInfo = useSelector((state: RootState) => state.userInfo);
   const [isLoading, setIsLoading] = useState(true);
+  const [isBanner, setIsBanner] = useState(false);
 
   useEffect(() => {
     const getPermission = async () => {
@@ -55,6 +67,22 @@ export default function WebApp() {
     getPermission();
   }, [userInfo]);
 
+  const webviewRef = useRef<WebView>(null);
+
+  function sendDataToWebView() {
+    webviewRef?.current?.postMessage(VERSION);
+  }
+
+  useEffect(() => {
+    let interval: NodeJS.Timer | undefined = undefined;
+    if (!isLoading && webviewRef.current) {
+      interval = setInterval(() => sendDataToWebView(), 1000);
+    }
+    return () => {
+      clearInterval(interval);
+    };
+  }, [isLoading, webviewRef]);
+
   const ActivityIndicatorElement = () => {
     return (
       <View
@@ -88,9 +116,20 @@ export default function WebApp() {
                 : { width: "100%", height: "100%", backgroundColor: "#FFF" }
             }
           >
+            {isBanner && (
+              <BannerAd
+                unitId={adUnitId}
+                size={BannerAdSize.FULL_BANNER}
+                requestOptions={{
+                  requestNonPersonalizedAdsOnly: true,
+                }}
+              />
+            )}
+
             <WebView
+              ref={webviewRef}
               source={{
-                uri: "https://chat-gpt-nzna.onrender.com" || "",
+                uri: "https://chat-gpt-nzna.onrender.com",
               }}
               userAgent={
                 Platform.OS === "android"
@@ -98,6 +137,10 @@ export default function WebApp() {
                   : "AppleWebKit/602.1.50 (KHTML, like Gecko) CriOS/56.0.2924.75"
               }
               onLoad={() => setIsLoading(false)}
+              onMessage={(e) => {
+                const response = JSON.parse(e.nativeEvent.data);
+                setIsBanner(response.adv === "banner");
+              }}
             />
             <StatusBar backgroundColor="#282829" barStyle="light-content" />
           </View>
