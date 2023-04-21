@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import WebView from "react-native-webview";
+import WebView, { WebViewMessageEvent } from "react-native-webview";
 import * as Notification from "expo-notifications";
 import { useSelector } from "react-redux";
 import { RootState } from "../store/store";
@@ -12,11 +12,16 @@ import {
   BannerAd,
   BannerAdSize,
   TestIds,
+  InterstitialAd,
 } from "react-native-google-mobile-ads";
 
 const adUnitId = __DEV__
   ? TestIds.BANNER
   : "ca-app-pub-1192136275433069/7264996283";
+
+const adUnitId2 = __DEV__
+  ? TestIds.INTERSTITIAL
+  : "ca-app-pub-1192136275433069/8816467241";
 
 const VERSION = "1";
 
@@ -33,6 +38,28 @@ export default function WebApp() {
   const userInfo = useSelector((state: RootState) => state.userInfo);
   const [isLoading, setIsLoading] = useState(true);
   const [isBanner, setIsBanner] = useState(false);
+  const [isBannerFull, setIsBannerFull] = useState(false);
+  const [interstitialAd, setInterstitialAd] = useState<InterstitialAd | null>(
+    null
+  );
+
+  useEffect(() => {
+    if (interstitialAd === null) {
+      // Create an interstitial ad
+      const ad = InterstitialAd.createForAdRequest(adUnitId2);
+      setInterstitialAd(ad);
+      // Load the ad
+      ad.load();
+    }
+  }, [interstitialAd]);
+
+  useEffect(() => {
+    if (isBannerFull && interstitialAd) {
+      interstitialAd.show();
+      setInterstitialAd(null);
+      setIsBannerFull(false);
+    }
+  }, [isBannerFull, interstitialAd]);
 
   useEffect(() => {
     const getPermission = async () => {
@@ -48,8 +75,8 @@ export default function WebApp() {
           alert("Enable push notifications to use the app!");
           return;
         }
-        const token = (await Notifications.getExpoPushTokenAsync()).data;
-        dispatch(setWebviewToken(token));
+        // const token = (await Notifications.getExpoPushTokenAsync()).data;
+        // dispatch(setWebviewToken(token));
       } else {
         alert("Must use physical device for Push Notifications");
       }
@@ -98,14 +125,20 @@ export default function WebApp() {
     );
   };
 
+  const nativeEventHandler = (e: WebViewMessageEvent) => {
+    const response = JSON.parse(e.nativeEvent.data);
+    if (response.adv === "banner") {
+      setIsBanner(true);
+    }
+    if (response.adv === "bannerFull") {
+      setIsBannerFull(true);
+    }
+  };
+
   return (
     <>
       {Platform.OS === "web" ? (
-        <iframe
-          src={"https://chat-gpt-nzna.onrender.com"}
-          height={"100%"}
-          width={"100%"}
-        />
+        <iframe src={"https://ai-gpt.icu"} height={"100%"} width={"100%"} />
       ) : (
         <>
           {isLoading && ActivityIndicatorElement()}
@@ -125,11 +158,10 @@ export default function WebApp() {
                 }}
               />
             )}
-
             <WebView
               ref={webviewRef}
               source={{
-                uri: "https://chat-gpt-nzna.onrender.com",
+                uri: "https://ai-gpt.icu",
               }}
               userAgent={
                 Platform.OS === "android"
@@ -137,10 +169,7 @@ export default function WebApp() {
                   : "AppleWebKit/602.1.50 (KHTML, like Gecko) CriOS/56.0.2924.75"
               }
               onLoad={() => setIsLoading(false)}
-              onMessage={(e) => {
-                const response = JSON.parse(e.nativeEvent.data);
-                setIsBanner(response.adv === "banner");
-              }}
+              onMessage={nativeEventHandler}
             />
             <StatusBar backgroundColor="#282829" barStyle="light-content" />
           </View>
