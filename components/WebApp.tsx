@@ -23,7 +23,7 @@ const adUnitId2 = __DEV__
   ? TestIds.INTERSTITIAL
   : "ca-app-pub-1192136275433069/8816467241";
 
-const VERSION = "1";
+const VERSION = "2";
 
 Notification.setNotificationHandler({
   handleNotification: async () => ({
@@ -61,38 +61,38 @@ export default function WebApp() {
     }
   }, [isBannerFull, interstitialAd]);
 
-  useEffect(() => {
-    const getPermission = async () => {
-      if (Constants.isDevice) {
-        const { status: existingStatus } =
-          await Notifications.getPermissionsAsync();
-        let finalStatus = existingStatus;
-        if (existingStatus !== "granted") {
-          const { status } = await Notifications.requestPermissionsAsync();
-          finalStatus = status;
-        }
-        if (finalStatus !== "granted") {
-          alert("Enable push notifications to use the app!");
-          return;
-        }
-        // const token = (await Notifications.getExpoPushTokenAsync()).data;
-        // dispatch(setWebviewToken(token));
-      } else {
-        alert("Must use physical device for Push Notifications");
-      }
+  // useEffect(() => {
+  //   const getPermission = async () => {
+  //     if (Constants.isDevice) {
+  //       const { status: existingStatus } =
+  //         await Notifications.getPermissionsAsync();
+  //       let finalStatus = existingStatus;
+  //       if (existingStatus !== "granted") {
+  //         const { status } = await Notifications.requestPermissionsAsync();
+  //         finalStatus = status;
+  //       }
+  //       if (finalStatus !== "granted") {
+  //         alert("Enable push notifications to use the app!");
+  //         return;
+  //       }
+  //       // const token = (await Notifications.getExpoPushTokenAsync()).data;
+  //       // dispatch(setWebviewToken(token));
+  //     } else {
+  //       alert("Must use physical device for Push Notifications");
+  //     }
 
-      if (Platform.OS === "android") {
-        Notifications.setNotificationChannelAsync("default", {
-          name: "default",
-          importance: Notifications.AndroidImportance.MAX,
-          vibrationPattern: [0, 250, 250, 250],
-          lightColor: "#FF231F7C",
-        });
-      }
-    };
+  //     if (Platform.OS === "android") {
+  //       Notifications.setNotificationChannelAsync("default", {
+  //         name: "default",
+  //         importance: Notifications.AndroidImportance.MAX,
+  //         vibrationPattern: [0, 250, 250, 250],
+  //         lightColor: "#FF231F7C",
+  //       });
+  //     }
+  //   };
 
-    getPermission();
-  }, [userInfo]);
+  //   getPermission();
+  // }, [userInfo]);
 
   const webviewRef = useRef<WebView>(null);
 
@@ -165,7 +165,7 @@ export default function WebApp() {
               }}
               userAgent={
                 Platform.OS === "android"
-                  ? "Chrome/18.0.1025.133 Mobile Safari/535.19"
+                  ? "Mozilla/5.0 (Linux; Android; Mobile; rv:18.0) Gecko/18.0 Firefox/18.0 Chrome/18.0.1025.133 Mobile Safari/535.19"
                   : "AppleWebKit/602.1.50 (KHTML, like Gecko) CriOS/56.0.2924.75"
               }
               onLoad={() => setIsLoading(false)}
