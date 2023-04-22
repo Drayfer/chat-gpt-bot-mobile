@@ -165,7 +165,7 @@ export default function WebApp() {
               }}
               userAgent={
                 Platform.OS === "android"
-                  ? "Mozilla/5.0 (Linux; Android; Mobile; rv:18.0) Gecko/18.0 Firefox/18.0 Chrome/18.0.1025.133 Mobile Safari/535.19"
+                  ? "Chrome/18.0.1025.133 Mobile Safari/535.19"
                   : "AppleWebKit/602.1.50 (KHTML, like Gecko) CriOS/56.0.2924.75"
               }
               onLoad={() => setIsLoading(false)}
