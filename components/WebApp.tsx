@@ -54,7 +54,7 @@ export default function WebApp() {
   }, [interstitialAd]);
 
   useEffect(() => {
-    if (isBannerFull && interstitialAd) {
+    if (isBannerFull && interstitialAd && interstitialAd.loaded) {
       interstitialAd.show();
       setInterstitialAd(null);
       setIsBannerFull(false);
