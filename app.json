@@ -2,7 +2,7 @@
   "expo": {
     "name": "AI Chat Assistant",
     "slug": "gptAiChatBot",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
@@ -20,7 +20,7 @@
     },
     "android": {
       "package": "com.gptaichat.bot",
-      "versionCode": 5,
+      "versionCode": 8,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#211f20"

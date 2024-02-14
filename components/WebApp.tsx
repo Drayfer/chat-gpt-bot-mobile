@@ -138,7 +138,7 @@ export default function WebApp() {
   return (
     <>
       {Platform.OS === "web" ? (
-        <iframe src={"https://ai-gpt.icu"} height={"100%"} width={"100%"} />
+        <iframe src={"https://ai-chat.icu"} height={"100%"} width={"100%"} />
       ) : (
         <>
           {isLoading && ActivityIndicatorElement()}
@@ -161,7 +161,7 @@ export default function WebApp() {
             <WebView
               ref={webviewRef}
               source={{
-                uri: "https://ai-gpt.icu",
+                uri: "https://ai-chat.icu",
               }}
               userAgent={
                 Platform.OS === "android"
